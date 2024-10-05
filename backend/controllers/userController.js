@@ -1,24 +1,33 @@
 const User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
 
 // Create User function
-const createUser = async (req, res) => {
+const registerUser = async (req, res) => {
+	const { username, password, email, provider } = req.body;
+
 	try {
-		const { username, email, password } = req.body;
+		// If registering via local method
+		if (provider === "local") {
+			const hashedPassword = await hashPassword(password); // Hash the password
+			const user = new User({ username, password: hashedPassword, provider });
+			await user.save();
+			return res.status(201).json({ message: "User registered successfully!" });
+		}
 
-		// Create a new user instance
+		// If registering via Google OAuth
 		const user = new User({
-			username, // Assuming your User model has a field named 'username'
 			email,
-			password,
+			googleId: req.user.id,
+			displayName: req.user.displayName,
+			provider,
 		});
-
-		// Save the user to the database
-		const savedUser = await user.save();
-		res.status(201).json(savedUser); // Use 201 for successful creation
+		await user.save();
+		return res
+			.status(201)
+			.json({ message: "User registered via Google successfully!" });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ message: "Server error", error });
+		return res.status(500).json({ error: "Error registering user." });
 	}
 };
 
-module.exports = { createUser }; // Export as an object if you have multiple functions
+module.exports = { registerUser }; // Export as an object if you have multiple functions
