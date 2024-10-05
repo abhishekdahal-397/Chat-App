@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon index.js"
+    "start": "nodemon index.js"
+    
   },
-
   "author": "",
   "license": "ISC",
   "description": "",
@@ -16,6 +16,6 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
-    "nodemon": "^3.1.6"
+    "nodemon": "^3.1.7"
   }
 }
