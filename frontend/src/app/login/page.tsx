@@ -8,12 +8,14 @@ import { useRouter } from "next/navigation";
 interface LoginResponse {
 	message: string;
 	error?: string;
+	Token?: string;
 }
 
 export default function LoginPage() {
 	const router = useRouter();
 	const [username, setUsername] = useState<string>("");
 	const [message, setMessage] = useState<string>("");
+	const [Token, setToken] = useState<string>("");
 
 	const handleLogin = async () => {
 		try {
@@ -23,12 +25,13 @@ export default function LoginPage() {
 			);
 
 			// Check for response status
-			if (response.status === 200) {
+			if (response.data.Token) {
+				localStorage.setItem("token", response.data.Token);
 				setMessage(response.data.message);
 				setUsername(username);
 				router.push("/chat");
 			} else {
-				setMessage(response.data.error || "Login failed");
+				setMessage(response.data.error || "Token not received. Login failed.");
 			}
 		} catch (error) {
 			// Check if error is an Axios error

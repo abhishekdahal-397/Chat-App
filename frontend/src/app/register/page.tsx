@@ -1,8 +1,9 @@
 "use client";
 // components/Register.tsx
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 const Register = () => {
+	const router = useRouter();
 	const [username, setUsername] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -27,13 +28,13 @@ const Register = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ username, email, password }),
+				body: JSON.stringify({ username }),
 			});
 
 			if (!res.ok) {
 				throw new Error("Registration failed");
 			}
-
+			router.push("/chat");
 			const data = await res.json();
 			setSuccess(data.message);
 		} catch (err: any) {
@@ -54,20 +55,7 @@ const Register = () => {
 					onChange={(e) => setUsername(e.target.value)}
 					className="w-full p-2 border border-gray-300 rounded"
 				/>
-				<input
-					type="email"
-					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					className="w-full p-2 border border-gray-300 rounded"
-				/>
-				<input
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					className="w-full p-2 border border-gray-300 rounded"
-				/>
+
 				<button
 					type="submit"
 					className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
