@@ -37,7 +37,7 @@ export default function ChatPage() {
 			<div>
 				<p className="text-white">Abhishek Dahal</p>
 			</div>
-			<div className="h-[60vh] bg-blue-50 overflow-y-auto mb-4 p-2">
+			<div className="h-[60vh] rounded bg-blue-50 overflow-y-auto mb-4 p-2">
 				{messages.map((msg, index) => (
 					<div
 						key={index}
@@ -64,7 +64,7 @@ export default function ChatPage() {
 					value={messageInput}
 					onChange={(e) => setMessageInput(e.target.value)}
 					placeholder="Type a message"
-					className="flex-grow"
+					className="flex-grow text-white"
 					onKeyDown={handleKeyDown}
 				/>
 				<Button onClick={sendMessage}>Send</Button>

@@ -1,6 +1,12 @@
 import {  clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 export default clerkMiddleware();
+// import { authMiddleware } from '@clerk/nextjs/server'
+
+// export default authMiddleware({
+//   publicRoutes: ['/', '/contact'],
+// })
+
 
 export const config = {
 
