@@ -17,12 +17,17 @@ interface Friend {
 	id: number;
 	username: string;
 }
+interface Message {
+	sender: string;
+	receiver: string;
+	date: Date;
+}
 
 const Page: React.FC = () => {
 	// Use the Friend type for the state
 
 	const [friends, setFriends] = useState<Friend[]>([]);
-
+	const [outgoingMessages, setOutgoingMessages] = useState<Message[]>([]);
 	useEffect(() => {
 		// Simulating API call with dummy data
 		const fetchedFriends: Friend[] = [
