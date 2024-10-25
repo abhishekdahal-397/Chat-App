@@ -7,17 +7,17 @@ const userSchema = new mongoose.Schema({
 	},
 	email: {
 		type: String,
-		required: true,
 		unique: true,
 	},
 	password: {
 		type: String,
-		required: true,
 	},
-	connectedUsers: {
-		type: Array,
-		default: [],
-	},
+	connectedUsers: [
+		{
+			type: mongoose.Types.ObjectId,
+			ref: "User", // Reference to the User model
+		},
+	],
 });
 
 const User = mongoose.model("User", userSchema);
