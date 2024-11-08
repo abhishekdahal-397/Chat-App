@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const mongoose = require("mongoose");
 // Create User function
 const registerUser = async (req, res) => {
 	const { username } = req.body;
@@ -57,44 +57,25 @@ const getAllUsers = async (req, res) => {
 	}
 	return res.status(200).json(users);
 };
-
 const getFriends = async (req, res) => {
 	try {
 		const { id } = req.params;
 
-		const result = await User.aggregate([
-			// Match the user by the given ID
-			{ $match: { _id: mongoose.Types.ObjectId(id) } },
-
-			// Lookup to get connected users from the User collection
-			{
-				$lookup: {
-					from: "users", // The name of the User collection (pluralized 'users')
-					localField: "connectedUsers",
-					foreignField: "_id",
-					as: "friends",
-				},
-			},
-
-			// Project only the friends' usernames
-			{
-				$project: {
-					_id: 0,
-					friends: { username: 1 }, // Extract only the usernames
-				},
-			},
-		]);
-
+		const result = await User.findById(id).populate(
+			"connectedUsers",
+			"username email"
+		);
+		console.log("result is ", result);
 		if (!result || result.length === 0) {
 			return res.status(404).json({ message: "User not found" });
 		}
 
-		const friendsUsernames = result[0].friends.map((friend) => friend.username);
-
-		return res.status(200).json({ friends: friendsUsernames });
+		// Return the user object with populated friends
+		return res.status(200).json(result);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ message: "Internal server error" });
 	}
 };
+
 module.exports = { registerUser, loginUser, getUser, getAllUsers, getFriends }; // Export as an object if you have multiple functions
