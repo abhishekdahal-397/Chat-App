@@ -36,9 +36,7 @@ export default function RootLayout({
 				<html lang="en">
 					<body>
 						<header>
-							<SignedOut>
-								<SignInButton />
-							</SignedOut>
+							<SignedOut>{/* <SignInButton /> */}</SignedOut>
 							<SignedIn>
 								<UserButton />
 							</SignedIn>
