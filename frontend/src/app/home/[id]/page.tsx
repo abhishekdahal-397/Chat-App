@@ -28,6 +28,7 @@ const Page: React.FC = () => {
 
 	const [friends, setFriends] = useState<Friend[]>([]);
 	const [outgoingMessages, setOutgoingMessages] = useState<Message[]>([]);
+	const [firstName, setFirstName] = useState<string>("Abhishek");
 	useEffect(() => {
 		// Simulating API call with dummy data
 		const fetchedFriends: Friend[] = [
@@ -48,13 +49,20 @@ const Page: React.FC = () => {
 		<div className="h-[100vh] rounded  bg-blue-200 grid  grid-cols-[5%_30%_65%]">
 			<div
 				style={{ backgroundColor: "#202c33" }}
-				className="flex flex-col justify-between"
+				className="flex flex-col justify-between text-white"
 			>
 				<div className="h-[40vh] w-full ">
 					<BsChatSquareFill className="cursor-pointer h-[4vh] w-[4vh] text-white  m-auto mt-6" />
 					<GrStatusGood className="cursor-pointer h-[4vh] w-[4vh] text-white  m-auto mt-6" />
 					<GrChannel className="cursor-pointer h-[4vh] w-[4vh] text-white  m-auto mt-6" />
 					<MdPeopleAlt className="cursor-pointer h-[4vh] w-[4vh] text-white  m-auto mt-6" />
+				</div>
+				<div className="flex flex-col items-center">
+					{firstName.split("").map((letter, index) => (
+						<span key={index} className="text-xl">
+							{letter}
+						</span>
+					))}
 				</div>
 				<div className=" h-[20vh] w-full">
 					<IoSettings className="cursor-pointer h-[4vh] w-[4vh] text-white  m-auto mt-6" />
