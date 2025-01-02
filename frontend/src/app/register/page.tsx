@@ -1,7 +1,10 @@
 "use client";
 // components/Register.tsx
 import { useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/user";
+
 const Register = () => {
 	const router = useRouter();
 	const [username, setUsername] = useState<string>("");
@@ -10,33 +13,36 @@ const Register = () => {
 	const [error, setError] = useState<string>("");
 	const [success, setSuccess] = useState<string>("");
 
+	const [registeredUser, setRegisteredUser] = useState<User | null>(null);
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setError("");
 		setSuccess("");
 
 		// Basic validation
-		if (!username || !email || !password) {
+		if (!username) {
 			setError("All fields are required");
 			return;
 		}
 
 		try {
-			const res = await fetch("http://localhost:5000/api/users/register", {
-				// Adjust your API URL accordingly
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ username }),
-			});
-
-			if (!res.ok) {
+			const res = await axios.post(
+				"http://localhost:5000/api/users/register",
+				{ username }, // Payload to send in the POST request
+				{
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			setRegisteredUser(res.data.user);
+			if (!res) {
 				throw new Error("Registration failed");
 			}
-			router.push("/chat");
-			const data = await res.json();
-			setSuccess(data.message);
+			router.push(`/home/${res.data.user._id}`);
+
+			setSuccess("registration success");
 		} catch (err: any) {
 			setError(err.message);
 		}

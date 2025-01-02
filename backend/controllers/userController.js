@@ -1,7 +1,14 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const getAllUsers = async (req, res) => {
+	const users = await User.find();
 
+	if (!users) {
+		return res.status(404).json({ error: "User not found" });
+	}
+	return res.status(200).json(users);
+};
 // Create User function
 const registerUser = async (req, res) => {
 	const { username } = req.body;
@@ -10,9 +17,11 @@ const registerUser = async (req, res) => {
 		const user = new User({ username });
 		await user.save();
 
-		return res.status(201).json({ message: "User registered successfully!" });
+		return res
+			.status(201)
+			.json({ user, message: "User registered successfully!" });
 	} catch (error) {
-		return res.status(404).json({ message: "something is completely wrong" });
+		return res.status(404).json({ message: `${error}` });
 	}
 };
 
@@ -32,13 +41,7 @@ const loginUser = async (req, res) => {
 	if (!user) {
 		return res.status(401).json({ error: "Invalid username" }); // Respond with 401 for invalid user
 	}
-	const token = jwt.sign({ username }, "your_jwt_secret", {
-		expiresIn: "1h",
-	});
-
-	// If the user is found, authenticate the user
-	console.log("User authenticated");
-	return res.status(200).json({ message: "User authenticated", Token: token }); // Successful authentication
+	return res.status(200).json({ message: "User authenticated" }); // Successful authentication
 };
 
 const getUser = async (req, res) => {
@@ -48,14 +51,6 @@ const getUser = async (req, res) => {
 		return res.status(404).json({ error: "User not found" });
 	}
 	return res.status(200).json(user);
-};
-const getAllUsers = async (req, res) => {
-	const users = await User.find();
-
-	if (!users) {
-		return res.status(404).json({ error: "User not found" });
-	}
-	return res.status(200).json(users);
 };
 
 const getFriends = async (req, res) => {
