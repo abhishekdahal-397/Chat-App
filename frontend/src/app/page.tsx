@@ -10,7 +10,9 @@ export default function Home() {
 			<Button variant={"outline"} asChild>
 				<Link href="/register">register</Link>
 			</Button>
-			<Link href="/home/423432">Chatpage</Link>
+			<Link href="/home/423432" className="bg-blue-400 border-black">
+				Chatpage
+			</Link>
 		</div>
 	);
 }

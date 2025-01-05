@@ -23,15 +23,14 @@ export default function LoginPage() {
 				"http://localhost:5000/api/users/login",
 				{ username }
 			);
-
+			console.log("response of handleLogin is ", response);
 			// Check for response status
-			if (response.data.Token) {
-				localStorage.setItem("token", response.data.Token);
+			if (response.status === 200) {
 				setMessage(response.data.message);
 				setUsername(username);
-				router.push("/chat");
+				router.push("/home/379837");
 			} else {
-				setMessage(response.data.error || "Token not received. Login failed.");
+				setMessage("something is wrong.");
 			}
 		} catch (error) {
 			// Check if error is an Axios error
