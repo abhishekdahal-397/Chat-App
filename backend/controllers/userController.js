@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
 	if (!user) {
 		return res.status(401).json({ error: "Invalid username" }); // Respond with 401 for invalid user
 	}
-	return res.status(200).json({ message: "User authenticated" }); // Successful authentication
+	return res.status(200).json({ message: "User authenticated", id: user._id }); // Successful authentication
 };
 
 const getUser = async (req, res) => {
